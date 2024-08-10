@@ -1,21 +1,9 @@
 import requests
+import socket
 from dontexposeme.apis import GROQ_API_KEY # no public :|
 from dontexposeme.chatbots import rishabsir # no public :|
 from dontexposeme.chatbots import unamed # no public :|
 from dontexposeme.chatbots import catgpt # no public :|
-predata = {
-    "messages": [
-        {
-            "role": "system",
-            "content": rishabsir.description
-        },
-        {
-            "role": "user",
-            "content": input("message: "),
-        },
-    ],
-    "model": rishabsir.model,
-}
 def get_groq_message(data):
     try:
         response = requests.post(
@@ -31,9 +19,27 @@ def get_groq_message(data):
     except requests.RequestException as error:
         print('Error:', error)
         raise
-if __name__ == "__main__":
-    try:
-        message = get_groq_message(predata)
-        print('Groq message:', message)
-    except Exception as error:
-        print('Error:', error)
+tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+tcp.bind(("127.0.0.1", 5005))
+tcp.listen(5)
+while True:
+    clientsocket, addr = tcp.accept()
+    data = clientsocket.recv(4096)
+    data = data.decode()
+    print(data)
+    predata = {
+    "messages": [
+            {
+                "role": "system",
+                "content": catgpt.description
+            },
+            {
+                "role": "user",
+                "content": data,
+            },
+        ],
+        "model": catgpt.model,
+    }
+    clientsocket.send(get_groq_message(predata).encode())
+    print("sent")
+    clientsocket.close()
