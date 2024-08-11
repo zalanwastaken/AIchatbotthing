@@ -1,5 +1,5 @@
 local socket = require("socket")
-local ip, port = "127.0.0.1", 5005
+local ip, port = "127.0.0.1", 5005 -- change to server ip
 local tcp = assert(socket.tcp())
 tcp:settimeout(5)
 local function split(input, delimiter)

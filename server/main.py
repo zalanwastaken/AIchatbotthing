@@ -11,10 +11,10 @@ predata = {
     "messages": [
         {
             "role": "system",
-            "content": unamed.description
+            "content": rishabsir.description
         }
     ],
-    "model": unamed.model,
+    "model": rishabsir.model,
     "max_tokens": 2048
 }
 def get_groq_message(data):
