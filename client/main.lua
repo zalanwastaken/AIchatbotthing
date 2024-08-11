@@ -2,6 +2,13 @@ local socket = require("socket")
 local ip, port = "127.0.0.1", 5005
 local tcp = assert(socket.tcp())
 tcp:settimeout(5)
+local function split(input, delimiter)
+    local result = {}
+    for match in (input..delimiter):gmatch("(.-)"..delimiter) do
+        table.insert(result, match)
+    end
+    return result
+end
 local function getaimsg(msg)
     tcp:connect(ip, port)
     tcp:send(msg)

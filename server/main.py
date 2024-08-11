@@ -1,17 +1,20 @@
 import requests
 import socket
+#from RealtimeTTS import TextToAudioStream, GTTSEngine
 from dontexposeme.apis import GROQ_API_KEY  # no public :|
 from dontexposeme.chatbots import rishabsir  # no public :|
 from dontexposeme.chatbots import unamed  # no public :|
 from dontexposeme.chatbots import catgpt  # no public :|
+#audioengine = GTTSEngine()
+#audiostream = TextToAudioStream(engine=audioengine)
 predata = {
     "messages": [
         {
             "role": "system",
-            "content": catgpt.description
+            "content": unamed.description
         }
     ],
-    "model": catgpt.model,
+    "model": unamed.model,
     "max_tokens": 2048
 }
 def get_groq_message(data):
@@ -45,7 +48,12 @@ while True:
     print("Received:", data)
     try:
         response_content = get_groq_message(predata)
-        clientsocket.send(response_content.encode())
+        #audiostream.feed(response_content)
+        #clientsocket.send(response_content.encode())
+        #audiostream.play(output_wavfile="output.wav", muted=True)
+        #audiofile = open("output.wav", "rb")
+        clientsocket.sendall(response_content.encode())
+        #audiofile.close()
         print("Sent:", response_content)
     except Exception as e:
         print("Error in message handling:", e)
