@@ -21,6 +21,27 @@ local function getaimsg(msg)
         end
     end
 end
+local function getaudio()
+    tcp:connect(ip, port)
+    tcp:send("audio")
+    local ret = ""
+    --local s, status, partial = tcp:receive(4096)
+    while true do
+        local s, status, partial = tcp:receive(4096)
+        if status == "closed" then
+            tcp:close()
+            break
+        else
+            if (s or partial) ~= nil then
+                ret = ret..(s or partial)
+            else
+                tcp:close()
+                break
+            end
+        end
+    end
+    return(love.data.newByteData(ret))
+end
 function love.load()
     ar = {"\b"}
     local fnt = love.graphics.newFont(16)
@@ -73,8 +94,24 @@ function love.keypressed(key)
         for i = 1, #ar-1, 1 do
             tmp = tmp..ar[i]
         end
+        if tmp == "/kill" then
+            tcp:connect(ip, port)
+            tcp:send(tmp)
+            tcp:close()
+            love.event.quit(0)
+            return
+        end
         resp = getaimsg(tmp)
         print(resp)
+        if not(love.filesystem.getInfo("audio")) then
+            love.filesystem.createDirectory("audio")
+        end
+        local audiofile = love.filesystem.newFile("audio/tts.wav", "w")
+        audiofile:write(getaudio())
+        audiofile:close()
+        audiofile = nil
+        local audio = love.audio.newSource("audio/tts.wav", "static")
+        love.audio.play(audio)
     end
     if key == "backspace" then
         ar[#ar] = nil

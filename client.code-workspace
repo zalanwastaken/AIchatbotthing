@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "."
+		},
+		{
+			"path": "../../../../AppData/Roaming/LOVE/client"
 		}
 	],
 	"settings": {}
