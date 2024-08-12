@@ -1,10 +1,9 @@
+#! PYTHON 3.12
 import requests
 import socket
 #from RealtimeTTS import TextToAudioStream, GTTSEngine
 from dontexposeme.apis import GROQ_API_KEY  # no public :|
-from dontexposeme.chatbots import rishabsir  # no public :|
-from dontexposeme.chatbots import unamed  # no public :|
-from dontexposeme.chatbots import catgpt  # no public :|
+from dontexposeme.chatbots import rishabsir, unamed, catgpt  # no public :|
 #audioengine = GTTSEngine()
 #audiostream = TextToAudioStream(engine=audioengine)
 predata = {
@@ -58,3 +57,12 @@ while True:
     except Exception as e:
         print("Error in message handling:", e)
     clientsocket.close()
+# * Made by Zalan(Zalander) aka zalanwastaken with Python🐍 and some 🎔
+# ! ________  ________  ___       ________  ________   ___       __   ________  ________  _________  ________  ___  __    _______   ________      
+# !|\_____  \|\   __  \|\  \     |\   __  \|\   ___  \|\  \     |\  \|\   __  \|\   ____\|\___   ___\\   __  \|\  \|\  \ |\  ___ \ |\   ___  \    
+# ! \|___/  /\ \  \|\  \ \  \    \ \  \|\  \ \  \\ \  \ \  \    \ \  \ \  \|\  \ \  \___|\|___ \  \_\ \  \|\  \ \  \/  /|\ \   __/|\ \  \\ \  \   
+# !     /  / /\ \   __  \ \  \    \ \   __  \ \  \\ \  \ \  \  __\ \  \ \   __  \ \_____  \   \ \  \ \ \   __  \ \   ___  \ \  \_|/_\ \  \\ \  \  
+# !    /  /_/__\ \  \ \  \ \  \____\ \  \ \  \ \  \\ \  \ \  \|\__\_\  \ \  \ \  \|____|\  \   \ \  \ \ \  \ \  \ \  \\ \  \ \  \_|\ \ \  \\ \  \ 
+# !   |\________\ \__\ \__\ \_______\ \__\ \__\ \__\\ \__\ \____________\ \__\ \__\____\_\  \   \ \__\ \ \__\ \__\ \__\\ \__\ \_______\ \__\\ \__\
+# !    \|_______|\|__|\|__|\|_______|\|__|\|__|\|__| \|__|\|____________|\|__|\|__|\_________\   \|__|  \|__|\|__|\|__| \|__|\|_______|\|__| \|__|
+# !                                                                                \|_________|                                                   
