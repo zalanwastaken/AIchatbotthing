@@ -37,6 +37,7 @@ tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 tcp.bind(("127.0.0.1", 5005))
 tcp.listen(5)
 print("WORKING !")
+response_content = None
 while True:
     clientsocket, addr = tcp.accept()
     data = clientsocket.recv(4096).decode()
@@ -47,7 +48,10 @@ while True:
     predata["messages"].append(newmsg)
     print("Received:", data)
     if data == "audio":
-        generateaudio(response_content, True)
+        if response_content != None:
+            generateaudio(response_content, True)
+        else:
+            generateaudio("ERROR", True)
         audiofile = open("audio/tts.wav", "rb")
         try:
             clientsocket.sendall(audiofile.read())
@@ -59,6 +63,11 @@ while True:
         break
     else:
         response_content = get_groq_message(predata)
+        newmsg = {
+            "role": "assistant",
+            "content": response_content
+        }
+        predata["messages"].append(newmsg)
         clientsocket.send(response_content.encode())
         print("Sent:", response_content)
     clientsocket.close()

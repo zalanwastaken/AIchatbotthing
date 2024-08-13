@@ -48,6 +48,7 @@ function love.load()
     love.graphics.setFont(fnt)
     x = love.mouse.getX()
     y = love.mouse.getY()
+    love.keyboard.setKeyRepeat(true)
 end
 function love.update(dt)
     x = love.mouse.getX()
