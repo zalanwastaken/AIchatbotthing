@@ -1,20 +1,18 @@
 #! PYTHON 3.12
 import requests
 import socket
-#from RealtimeTTS import TextToAudioStream, GTTSEngine
 from dontexposeme.apis import GROQ_API_KEY  # no public :|
 from dontexposeme.chatbots import rishabsir, unamed, catgpt  # no public :|
 from helpers.generatetts import generateaudio
 import os
-import math
 predata = {
     "messages": [
         {
             "role": "system",
-            "content": rishabsir.description
+            "content": catgpt.description
         }
     ],
-    "model": rishabsir.model,
+    "model": catgpt.model,
     "max_tokens": 2048
 }
 def get_groq_message(data):
@@ -51,16 +49,6 @@ while True:
     if data == "audio":
         generateaudio(response_content, True)
         audiofile = open("audio/tts.wav", "rb")
-        '''
-        for i in range(math.floor(os.path.getsize("audio/tts.wav")/4096)):
-            print(i)
-            try:
-                clientsocket.sendall(audiofile.read())
-                print("sent:", audiofile.read())
-            except Exception as e:
-                print(e)
-                break
-        '''
         try:
             clientsocket.sendall(audiofile.read())
             print("sent:", audiofile.read())
