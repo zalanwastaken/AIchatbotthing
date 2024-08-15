@@ -82,6 +82,14 @@ function love.draw()
     love.graphics.circle("fill", right_pupil_x, right_pupil_y, pupil_radius)
     love.graphics.setColor(1, 1, 1)
     love.graphics.printf(ar, 0, love.graphics.getHeight()/2-math.abs(16), love.graphics.getWidth(), "center")
+    --[[
+    if resp ~= nil then
+        love.graphics.printf(resp or "N/A", 0, love.graphics.getHeight()/2, love.graphics.getWidth(), "center")
+    else
+        love.graphics.circle("line", love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 40)
+    end
+    --]]
+    --TODO add a smile when resp is nil
     love.graphics.printf(resp or "N/A", 0, love.graphics.getHeight()/2, love.graphics.getWidth(), "center")
 end
 function love.textinput(key)

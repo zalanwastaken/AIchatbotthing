@@ -9,10 +9,10 @@ predata = {
     "messages": [
         {
             "role": "system",
-            "content": catgpt.description
+            "content": unamed.description
         }
     ],
-    "model": catgpt.model,
+    "model": unamed.model,
     "max_tokens": 2048
 }
 def get_groq_message(data):
@@ -37,6 +37,7 @@ tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 tcp.bind(("127.0.0.1", 5005))
 tcp.listen(5)
 print("WORKING !")
+print("TIP: send /kill from a client to stop the server")
 response_content = None
 while True:
     clientsocket, addr = tcp.accept()

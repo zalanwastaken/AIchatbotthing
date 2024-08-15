@@ -1,16 +1,20 @@
 {
 	"folders": [
 		{
+			"name": "client",
 			"path": "client"
 		},
 		{
+			"name": "server",
 			"path": "server"
 		},
 		{
-			"path": "."
+			"name": "client",
+			"path": "../../../../AppData/Roaming/LOVE/client"
 		},
 		{
-			"path": "../../../../AppData/Roaming/LOVE/client"
+			"name": "school",
+			"path": "."
 		}
 	],
 	"settings": {}
