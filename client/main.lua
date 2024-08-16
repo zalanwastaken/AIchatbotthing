@@ -1,6 +1,6 @@
 --! LOVE 11.5 LUA 5.1
 local socket = require("socket")
-local ip, port = "127.0.0.1", 5005 -- change to server ip
+local ip, port = "127.0.0.1", 5005 --? change to server ip
 local tcp = assert(socket.tcp())
 tcp:settimeout(5)
 local function split(input, delimiter)
@@ -25,7 +25,6 @@ local function getaudio()
     tcp:connect(ip, port)
     tcp:send("audio")
     local ret = ""
-    --local s, status, partial = tcp:receive(4096)
     while true do
         local s, status, partial = tcp:receive(4096)
         if status == "closed" then
@@ -92,9 +91,9 @@ function love.draw()
     end
     love.graphics.setColor(1, 0, 0, 1)
     if resp == nil then
-        love.graphics.print("DEBUG\nDPI:"..love.graphics.getDPIScale().."\nRESP:".."nil".."\nIP and PORT:"..ip..":"..port)
+        love.graphics.print("DEBUG\nDPI:"..love.graphics.getDPIScale().."\nRESP:".."no".."\nIP and PORT:"..ip..":"..port.."\nInput array: "..#ar)
     else
-        love.graphics.print("DEBUG\nDPI:"..love.graphics.getDPIScale().."\nRESP:"..resp.."\nIP and PORT:"..ip..":"..port)
+        love.graphics.print("DEBUG\nDPI:"..love.graphics.getDPIScale().."\nRESP:".."yes".."\nIP and PORT:"..ip..":"..port.."\nInput array: "..#ar)
     end
     love.graphics.setColor(1, 1, 1, 1)
 end
@@ -128,7 +127,7 @@ function love.keypressed(key)
         local audio = love.audio.newSource("audio/tts.wav", "static")
         love.audio.play(audio)
     end
-    if key == "backspace" then
+    if key == "backspace" and #ar ~= 0 then
         ar[#ar] = nil
         ar[#ar] = nil
         ar[#ar+1] = "\b"

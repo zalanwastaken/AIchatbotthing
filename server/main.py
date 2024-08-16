@@ -9,11 +9,11 @@ predata = {
     "messages": [
         {
             "role": "system",
-            "content": unamed.description
+            "content": catgpt.description
         }
     ],
-    "model": unamed.model,
-    "max_tokens": 2048
+    "model": catgpt.model,
+    "max_tokens": 4096
 }
 def get_groq_message(data):
     try:
