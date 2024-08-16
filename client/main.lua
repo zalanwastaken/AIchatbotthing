@@ -82,15 +82,21 @@ function love.draw()
     love.graphics.circle("fill", right_pupil_x, right_pupil_y, pupil_radius)
     love.graphics.setColor(1, 1, 1)
     love.graphics.printf(ar, 0, love.graphics.getHeight()/2-math.abs(16), love.graphics.getWidth(), "center")
-    --[[
-    if resp ~= nil then
-        love.graphics.printf(resp or "N/A", 0, love.graphics.getHeight()/2, love.graphics.getWidth(), "center")
+    if resp == nil then
+        love.graphics.arc("fill", love.graphics.getWidth() / 2, love.graphics.getHeight() / 2 + 100, 100, 0, math.pi)
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.arc("fill", love.graphics.getWidth() / 2, love.graphics.getHeight() / 2 + 100, 50, 0, math.pi)
+        love.graphics.setColor(1, 1, 1)
     else
-        love.graphics.circle("line", love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 40)
+        love.graphics.printf(resp, 0, love.graphics.getHeight()/2, love.graphics.getWidth(), "center")
     end
-    --]]
-    --TODO add a smile when resp is nil
-    love.graphics.printf(resp or "N/A", 0, love.graphics.getHeight()/2, love.graphics.getWidth(), "center")
+    love.graphics.setColor(1, 0, 0, 1)
+    if resp == nil then
+        love.graphics.print("DEBUG\nDPI:"..love.graphics.getDPIScale().."\nRESP:".."nil".."\nIP and PORT:"..ip..":"..port)
+    else
+        love.graphics.print("DEBUG\nDPI:"..love.graphics.getDPIScale().."\nRESP:"..resp.."\nIP and PORT:"..ip..":"..port)
+    end
+    love.graphics.setColor(1, 1, 1, 1)
 end
 function love.textinput(key)
     ar[#ar] = nil
