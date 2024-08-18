@@ -1,3 +1,4 @@
+# IMPORTANT: LICENCE HAS BEEN UPDATED PLEASE READ licence.txt !
 # THIS PROJECT IS CURRENTLY IN TESTING AND SOULD BE CONSIDERED UNSTABLE
 ## How to setup:
 ### Install dependencies
@@ -5,8 +6,9 @@
     sudo add-apt-repository ppa:bartbes/love-stable
     sudo apt install love -y
     sudo pip install piper requests socket
-### Make the api file
+### Make the dontexposeme folder
     mkdir dontexposeme
+### Make the api file
     touch dontexposeme/apis.py
     echo "GROQ_API_KEY = <replace with your groq api key !>" > dontexposeme/apis.py
 ### Make the chabots file
