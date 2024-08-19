@@ -41,7 +41,13 @@ function love.load()
     x = love.mouse.getX()
     y = love.mouse.getY()
     love.keyboard.setKeyRepeat(true)
-    love.window.setMode(1000, 600, {resizable = true, minwidth = 1000, minheight = 600})
+    local flags = {
+        resizable = true,
+        minwidth = 1900,
+        minheight = 800,
+        vsync = false
+    }
+    love.window.setMode(1900, 800, flags)
 end
 function love.update(dt)
     x = love.mouse.getX()
@@ -108,10 +114,12 @@ function love.draw()
     end
     love.graphics.setColor(1, 1, 1, 1)
     --? grid
-    for i = 1, 8, 1 do
-        love.graphics.line(i*love.graphics.getWidth()/8, 0, i*love.graphics.getWidth()/8, love.graphics.getHeight())
-        love.graphics.line(0, i*love.graphics.getHeight()/8, love.graphics.getWidth(), i*love.graphics.getHeight()/8)
+    --[[
+    for i = 1, 20, 1 do
+        love.graphics.line(i*love.graphics.getWidth()/20, 0, i*love.graphics.getWidth()/20, love.graphics.getHeight())
+        love.graphics.line(0, i*love.graphics.getHeight()/20, love.graphics.getWidth(), i*love.graphics.getHeight()/20)
     end
+    --]]
 end
 function love.textinput(key)
     ar[#ar] = nil
