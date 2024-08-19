@@ -10,6 +10,7 @@
     git clone https://github.com/zalanwastaken/AIchatbotthing.git catrepo
     cd catrepo
 ### Make the dontexposeme folder
+    cd sever
     mkdir dontexposeme
 ### Make the api file
     touch dontexposeme/apis.py
