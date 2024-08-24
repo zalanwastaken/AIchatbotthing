@@ -9,4 +9,4 @@ Permission is granted to anyone to use this software and to alter it, subject to
 3. This notice may not be removed or altered from any source distribution.
 4. Redistribution of the original form of this software is prohibited unless explicit written permission is granted by the authors.
 5. The author's name shall NOT be used to market any copies of this software unless explicit written permission is granted by the authors.
-6. Commercial use of this software is prohibited unless explicit written permission is granted by the authors.
+6. Commercial use of this software either modified or original is prohibited unless explicit written permission is granted by the authors.
