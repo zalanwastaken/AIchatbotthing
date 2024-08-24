@@ -1,15 +1,8 @@
 --! LOVE 11.5 LUA 5.1
 local socket = require("socket")
-local ip, port = "127.0.0.1", 5005 -- change to server ip
+local ip, port = "127.0.0.1", 5005 --? change to server ip
 local tcp = assert(socket.tcp())
 tcp:settimeout(5)
-local function split(input, delimiter)
-    local result = {}
-    for match in (input..delimiter):gmatch("(.-)"..delimiter) do
-        table.insert(result, match)
-    end
-    return result
-end
 local function getaimsg(msg)
     tcp:connect(ip, port)
     tcp:send(msg)
@@ -25,7 +18,6 @@ local function getaudio()
     tcp:connect(ip, port)
     tcp:send("audio")
     local ret = ""
-    --local s, status, partial = tcp:receive(4096)
     while true do
         local s, status, partial = tcp:receive(4096)
         if status == "closed" then
@@ -49,14 +41,21 @@ function love.load()
     x = love.mouse.getX()
     y = love.mouse.getY()
     love.keyboard.setKeyRepeat(true)
+    local flags = {
+        resizable = true,
+        minwidth = 1900,
+        minheight = 800,
+        vsync = false
+    }
+    love.window.setMode(1900, 800, flags)
 end
 function love.update(dt)
     x = love.mouse.getX()
     y = love.mouse.getY()
 end
 function love.draw()
-    local eye_radius = 40
-    local pupil_radius = 20
+    local eye_radius = 55
+    local pupil_radius = 30
     local left_eye_x = love.graphics.getWidth()/4
     local left_eye_y = love.graphics.getHeight()/4
     local right_eye_x = love.graphics.getWidth()/4 + (love.graphics.getWidth()/2)
@@ -81,8 +80,46 @@ function love.draw()
     love.graphics.circle("fill", left_pupil_x, left_pupil_y, pupil_radius)
     love.graphics.circle("fill", right_pupil_x, right_pupil_y, pupil_radius)
     love.graphics.setColor(1, 1, 1)
-    love.graphics.printf(ar, 0, love.graphics.getHeight()/2-math.abs(16), love.graphics.getWidth(), "center")
-    love.graphics.printf(resp or "N/A", 0, love.graphics.getHeight()/2, love.graphics.getWidth(), "center")
+    love.graphics.printf(ar, 0, love.graphics.getHeight() - 100, love.graphics.getWidth(), "center")
+    if resp == nil then
+        --? smile
+        local smileoffset = 80
+        love.graphics.arc("fill", love.graphics.getWidth() / 2 - smileoffset, love.graphics.getHeight() / 2 + 100, 100, 0, math.pi)
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.arc("fill", love.graphics.getWidth() / 2 - smileoffset, love.graphics.getHeight() / 2 + 100, 50, 0, math.pi)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.arc("fill", love.graphics.getWidth() / 2 + smileoffset, love.graphics.getHeight() / 2 + 100, 100, 0, math.pi)
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.arc("fill", love.graphics.getWidth() / 2 + smileoffset, love.graphics.getHeight() / 2 + 100, 50, 0, math.pi)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("fill", love.graphics.getWidth() / 2 - 30, (love.graphics.getHeight() / 2 + smileoffset) - 100, 60, 120)
+        love.graphics.polygon("fill", love.graphics.getWidth() / 2 + 30, (love.graphics.getHeight() / 2 + smileoffset) - 100, love.graphics.getWidth() / 2 + 90, (love.graphics.getHeight() / 2 + smileoffset) - 150, love.graphics.getWidth() / 2 - 30, (love.graphics.getHeight() / 2 + smileoffset) - 100, love.graphics.getWidth() / 2 - 90, (love.graphics.getHeight() / 2 + smileoffset) - 150, love.graphics.getWidth() / 2 - 90, (love.graphics.getHeight() / 2 + smileoffset) - 150, love.graphics.getWidth() / 2 + 90, (love.graphics.getHeight() / 2 + smileoffset) - 150)
+        --? wiskers
+        love.graphics.setLineWidth(20)
+        love.graphics.line(love.graphics.getWidth() / 2 - 200, love.graphics.getHeight() / 2 - 10, love.graphics.getWidth() / 4, love.graphics.getHeight() / 3)
+        love.graphics.line(love.graphics.getWidth() / 2 - 200, love.graphics.getHeight() / 2 + 10, love.graphics.getWidth() / 4, love.graphics.getHeight() - love.graphics.getHeight() / 3)
+        love.graphics.line(love.graphics.getWidth() / 2 - 200, love.graphics.getHeight() / 2, love.graphics.getWidth() / 2 - 400, love.graphics.getHeight() / 2)
+        love.graphics.line(love.graphics.getWidth() / 2 + 200, love.graphics.getHeight() / 2 - 10, love.graphics.getWidth() / 2 +  love.graphics.getWidth() / 4, love.graphics.getHeight() / 3)
+        love.graphics.line(love.graphics.getWidth() / 2 + 200, love.graphics.getHeight() / 2 + 10, love.graphics.getWidth() / 2 +  love.graphics.getWidth() / 4, love.graphics.getHeight() - love.graphics.getHeight() / 3)
+        love.graphics.line(love.graphics.getWidth() / 2 + 200, love.graphics.getHeight() / 2, love.graphics.getWidth() / 2 + 400, love.graphics.getHeight() / 2)
+        love.graphics.setLineWidth(1)
+    else
+        love.graphics.printf(resp, 0, love.graphics.getHeight()/2, love.graphics.getWidth(), "center")
+    end
+    love.graphics.setColor(1, 0, 0, 1)
+    if resp == nil then
+        love.graphics.print("DEBUG\nDPI:"..love.graphics.getDPIScale().."\nRESP:".."no".."\nIP and PORT:"..ip..":"..port.."\nInput array: "..#ar.."\nFPS:"..love.timer.getFPS())
+    else
+        love.graphics.print("DEBUG\nDPI:"..love.graphics.getDPIScale().."\nRESP:".."yes".."\nIP and PORT:"..ip..":"..port.."\nInput array: "..#ar.."\nFPS:"..love.timer.getFPS())
+    end
+    love.graphics.setColor(1, 1, 1, 1)
+    --? grid
+    --[[
+    for i = 1, 20, 1 do
+        love.graphics.line(i*love.graphics.getWidth()/20, 0, i*love.graphics.getWidth()/20, love.graphics.getHeight())
+        love.graphics.line(0, i*love.graphics.getHeight()/20, love.graphics.getWidth(), i*love.graphics.getHeight()/20)
+    end
+    --]]
 end
 function love.textinput(key)
     ar[#ar] = nil
@@ -114,9 +151,10 @@ function love.keypressed(key)
         local audio = love.audio.newSource("audio/tts.wav", "static")
         love.audio.play(audio)
     end
-    if key == "backspace" then
-        ar[#ar] = nil
-        ar[#ar] = nil
+    if key == "backspace" and #ar ~= 0 then
+        for i = 1, 2, 1 do
+            ar[#ar] = nil
+        end
         ar[#ar+1] = "\b"
     end
 end

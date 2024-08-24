@@ -6,7 +6,7 @@ const tts = require("say");
 let messages = [];
 async function gentts(txt){
     return new Promise((resolve, reject)=>{
-        tts.export(txt, "Microsoft David Desktop", 1, "audio/tts.wav", (err)=>{
+        tts.export(txt, "Microsoft David Desktop", 1, "audio/tts.wav", (err)=>{ // x * 100 = 100x% (1 * 100 = 100% speed)
             if (err){
                 console.log(err)
                 reject(err);
