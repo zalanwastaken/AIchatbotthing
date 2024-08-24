@@ -1,6 +1,7 @@
+const { groqapikey } = require("./dontexposeme/apis");
 const Groq = require("groq-sdk");
 const tcp = require("net");
-const groq = new Groq({apiKey: "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"});
+const groq = new Groq({apiKey: groqapikey});
 const fs = require("fs");
 const tts = require("say");
 let messages = [];
@@ -81,6 +82,7 @@ function init(){
     })
 }
 function main() {
+    console.log("Starting server...");
     init();
 }
 main();
