@@ -22,7 +22,10 @@ local tcpfuncs = {
         sock:send(data)
         while true do
             local s, status, partial = sock:receive(buff)
-            print(s, status, partial)
+            if status:lower() == "socket is not connected" then
+                ret = nil
+                break
+            end
             if status:lower() == "closed" then
                 ret = ret..(s or partial)
                 sock:close()

@@ -3,6 +3,7 @@ local tcpfuncs = require("libs/tcpfuncs")
 local socket = require("socket")
 local IP, PORT = "127.0.0.1", 5005
 local tcp = assert(socket.tcp())
+local key = ""
 tcp:settimeout(5)
 function love.load()
     local fnt = love.graphics.newFont(24)
@@ -84,7 +85,7 @@ function love.mousepressed(x, y, button)
                 tmppass = tmppass..pass[i]
             end
             print(tmpuser, tmppass)
-            tcpfuncs.FETCH(tcp, IP, PORT, json.encode({
+            local resp = tcpfuncs.FETCH(tcp, IP, PORT, json.encode({
                 head = {
                     type = "data/data",
                     reqtype = "HELO"
@@ -94,8 +95,36 @@ function love.mousepressed(x, y, button)
                     pass = tmppass
                 }
             }))
+            print(resp)
+            resp = json.decode(resp)
+            if resp.head.type == "data/error" then
+                error(resp.data.message)
+            end
+            key = resp.data.key
+            love.timer.sleep(1)
         end
         user[#user + 1] = "\b"
         pass[#pass + 1] = "\b"
     end
+end
+function love.quit()
+    local tmpuser = ""
+    for i = 1, #user, 1 do
+        tmpuser = tmpuser..user[i]
+    end
+    local resp = tcpfuncs.FETCH(tcp, IP, PORT, json.encode({
+        head = {
+            type = "data/data",
+            reqtype = "BYE"
+        },
+        data = {
+            user = tmpuser,
+            key = key
+        }
+    }))
+    resp = json.decode(resp)
+    if resp.head.type == "data/error" then
+        error(resp.data.contents)
+    end
+    return false
 end
