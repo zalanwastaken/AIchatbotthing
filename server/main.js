@@ -5,7 +5,7 @@ const crypto = require('crypto')
 const groq = new Groq({apiKey: groqapikey})
 const tcp = require("net")
 //*vars
-var loggedinusers = {}
+let loggedinusers = {}
 //* funcs
 function generateRandomString(length) {
     return crypto.randomBytes(length).toString('hex').slice(0, length);
@@ -42,13 +42,13 @@ async function init(){
                         data : {
                             ping : "pong"
                         }
-                    }))
+                    }).trim())
                 }
                 if(jsondata.head.reqtype == "HELO"){
                     if(await handlelogin(jsondata.data.user, jsondata.data.pass) == true){
                         if(typeof loggedinusers[jsondata.data.user] === "undefined"){
-                            let userkey = generateRandomString(16)
-                            let sendkey = ""
+                            var userkey = generateRandomString(16)
+                            var sendkey = ""
                             if(users[jsondata.data.user].uid < 10){
                                 sendkey = SSKEY
                             }
@@ -62,7 +62,6 @@ async function init(){
                                 }
                             }).trim())
                             loggedinusers[jsondata.data.user] = userkey
-                            console.log(loggedinusers[jsondata.data.user])
                         }
                         else{
                             sock.write(JSON.stringify({
@@ -72,7 +71,7 @@ async function init(){
                                 data:{
                                     message:"User already has a active session"
                                 }
-                            }))
+                            }).trim())
                         }
                     }
                     else{
@@ -83,13 +82,13 @@ async function init(){
                             data :{
                                 message:"AUTH FAILED !"
                             }
-                        }))
+                        }).trim())
                     }
                 }
                 if(jsondata.head.reqtype == "BYE"){
                     if(typeof loggedinusers[jsondata.data.user] !== "undefined"){
                         if(loggedinusers[jsondata.data.user] == jsondata.data.key){
-                            loggedinusers[jsondata.data.user] = undefined
+                            delete loggedinusers[jsondata.data.user]
                             sock.write(JSON.stringify({
                                 head:{
                                     type:"data/data"
@@ -100,6 +99,7 @@ async function init(){
                             }).trim())
                         }
                         else{
+                            console.log("key err")
                             sock.write(JSON.stringify({
                                 head:{
                                     type:"data/error"
@@ -111,6 +111,7 @@ async function init(){
                         }
                     }
                     else{
+                        console.log("unknown user err")
                         sock.write(JSON.stringify({
                             head:{
                                 type:"data/error"
@@ -123,6 +124,10 @@ async function init(){
                 }
             }
             sock.end()
+            console.log("Logged in users:", loggedinusers);
+        })
+        sock.on("end", ()=>{
+            console.log("client diconnected")
         })
     })
     server.listen(5005, ()=>{
@@ -136,3 +141,12 @@ async function main(){
     })
 }
 main()
+//* Made by Zalan(Zalander) aka zalanwastaken with NodeJS and some 🎔
+//! ________  ________  ___       ________  ________   ___       __   ________  ________  _________  ________  ___  __    _______   ________      
+//!|\_____  \|\   __  \|\  \     |\   __  \|\   ___  \|\  \     |\  \|\   __  \|\   ____\|\___   ___\\   __  \|\  \|\  \ |\  ___ \ |\   ___  \    
+//! \|___/  /\ \  \|\  \ \  \    \ \  \|\  \ \  \\ \  \ \  \    \ \  \ \  \|\  \ \  \___|\|___ \  \_\ \  \|\  \ \  \/  /|\ \   __/|\ \  \\ \  \   
+//!     /  / /\ \   __  \ \  \    \ \   __  \ \  \\ \  \ \  \  __\ \  \ \   __  \ \_____  \   \ \  \ \ \   __  \ \   ___  \ \  \_|/_\ \  \\ \  \  
+//!    /  /_/__\ \  \ \  \ \  \____\ \  \ \  \ \  \\ \  \ \  \|\__\_\  \ \  \ \  \|____|\  \   \ \  \ \ \  \ \  \ \  \\ \  \ \  \_|\ \ \  \\ \  \ 
+//!   |\________\ \__\ \__\ \_______\ \__\ \__\ \__\\ \__\ \____________\ \__\ \__\____\_\  \   \ \__\ \ \__\ \__\ \__\\ \__\ \_______\ \__\\ \__\
+//!    \|_______|\|__|\|__|\|_______|\|__|\|__|\|__| \|__|\|____________|\|__|\|__|\_________\   \|__|  \|__|\|__|\|__| \|__|\|_______|\|__| \|__|
+//!                                                                                \|_________|                                                   
