@@ -3,12 +3,12 @@ local utils = {
         if msg ~= nil then
             print("[WARN]["..os.time().."] "..msg)
         else
-            error("No warn msg provided")
+            print("[WARN]["..os.time().."] NO MESSAGE PROVIDED !")
         end
     end
 }
 local tcpfuncs = {
-    POST = function(sock, ip, port, data)
+    POST = function(sock, ip, port, data) --! Dont rely on this to post critical message this will NOT provide a error message if the message fails to post
         sock:connect(ip, port)
         sock:send(data)
         sock:close()
@@ -23,7 +23,9 @@ local tcpfuncs = {
         while true do
             local s, status, partial = sock:receive(buff)
             if status:lower() == "socket is not connected" then
+                sock:close()
                 ret = nil
+                utils.warn("Unable to connect to sever at "..ip..":"..tostring(port).." using buff "..buff)
                 break
             end
             if status:lower() == "closed" then
@@ -50,6 +52,7 @@ local tcpfuncs = {
         local s, status, partial = sock:receive(buff)
         if status:lower() == "timeout" or status:lower() == "socket is not connected" then
             sock:close()
+            utils.warn("Unable to ping server at "..ip..":"..tostring(port).." using buff: "..buff)
             return(nil)
         else
             sock:close()

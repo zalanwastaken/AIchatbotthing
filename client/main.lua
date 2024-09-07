@@ -1,6 +1,7 @@
 local json = require("libs/json")
 local tcpfuncs = require("libs/tcpfuncs")
 local socket = require("socket")
+require("helpers/errorhandler")
 local IP, PORT = "127.0.0.1", 5005
 local tcp = assert(socket.tcp())
 local key = ""
